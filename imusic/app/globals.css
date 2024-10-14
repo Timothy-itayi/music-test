@@ -25,3 +25,68 @@ body {
     text-wrap: balance;
   }
 }
+
+.project-container {
+  perspective: 1000px;
+  overflow-x: scroll;
+  padding: 100px 0;
+  white-space: nowrap;
+}
+
+.project-stack {
+  display: inline-block;
+  transform: rotateY(45deg) skew(-10deg);
+  padding: 0 200px;
+}
+
+.project-card {
+  display: inline-block;
+  width: 300px;
+  height: 400px;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-right: -200px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.project-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all 0.3s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-10px);
+  z-index: 10;
+}
+
+.project-stack:hover .project-card:not(:hover) img {
+  filter: grayscale(100%) brightness(70%);
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 600px;
+}
