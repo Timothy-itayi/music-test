@@ -38,12 +38,12 @@ export default function Home ()  {
         </div>
       </div>
       <div className="absolute right-4 ">
-        <button className="px-4 py-2 bg-black rounded-full text-white  text-sm">ALL 144</button>
-        <button className="px-4 py-2 bg-black rounded-full text-white  text-sm">GRAPHIC IDENTITY 43</button>
-        <button className="px-4 py-2 bg-black rounded-full text-white  text-sm">SITE DESIGN 25</button>
-        <button className="px-4 py-2 bg-black rounded-full text-white  text-sm">AI 61</button>
-        <button className="px-4 py-2 bg-black rounded-full text-white  text-sm">VIDEO 14</button>
-        <button className="px-4 py-2 bg-black rounded-full text-white  text-sm">3D 17</button>
+        <button className="px-4 py-2 bg-black rounded-full text-white  text-sm">Genres</button>
+        <button className="px-4 py-2 bg-black rounded-full text-white  text-sm">Albums</button>
+        <button className="px-4 py-2 bg-black rounded-full text-white  text-sm">Playlists</button>
+        <button className="px-4 py-2 bg-black rounded-full text-white  text-sm">Radio</button>
+        <button className="px-4 py-2 bg-black rounded-full text-white  text-sm">Cafe</button>
+     
       </div>
       <Modal
         image={selectedImage?.src}
