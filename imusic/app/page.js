@@ -2,21 +2,13 @@
 import { useState } from 'react';
 import Head from 'next/head';
 import ProjectCard from '../app/components/Cards/ProjectCard';
+import images from './data/images-data';
 import Modal from '../app/components/Modals/Modals';
 import Navbar from './components/Nav/NavBar';
 
 export default function Home ()  {
   const [selectedImage, setSelectedImage] = useState(null);
-  const images = [
-    { src: "/assets/icon00.png", alt: "Orchids project image" },
-    { src: "/assets/icon01.png", alt: "Sports image with players celebrating" },
-    { src: "/assets/icon02.png", alt: "Blurred nature image with green and yellow tones" },
-    { src: "/assets/icon03.png", alt: "Close-up of purple crystal formation" },
-    { src: "/assets/icon04.png", alt: "Close-up of a golf ball" },
-    { src: "/assets/icon05.png", alt: "Scenic sky with clouds" },
-    { src: "/assets/icon06.png", alt: "Abstract blue circular shape" },
-  
-  ];
+
 
   return (
     <div>
@@ -46,11 +38,13 @@ export default function Home ()  {
      
       </div>
       <Modal
-        image={selectedImage?.src}
-        alt={selectedImage?.alt}
-        isOpen={!!selectedImage}
-        onClose={() => setSelectedImage(null)}
-      />
+  image={selectedImage?.src}
+  alt={selectedImage?.alt}
+  soundKey={selectedImage?.soundKey}
+  isOpen={!!selectedImage}
+  onClose={() => setSelectedImage(null)}
+/>
+
     </div>
   );
 };
