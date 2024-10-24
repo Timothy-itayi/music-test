@@ -35,7 +35,7 @@ body {
 
 .project-stack {
   display: inline-block;
-  transform: rotateY(45deg) skew(-10deg);
+  transform: rotateY(35deg) skew(0deg);
   padding: 0  200px;
 }
 
