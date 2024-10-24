@@ -54,6 +54,7 @@ body {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  background-color: transparent;
  
 }
 
@@ -87,7 +88,7 @@ body {
   background-color: #000000;
   margin: 15% auto;
  
-  border: 1px solid #ab3131;
+  border: 1px solid antiquewhite;
   width: 80%;
   max-width: 600px;
 }
