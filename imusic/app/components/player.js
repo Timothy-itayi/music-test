@@ -1,96 +1,134 @@
-import React, { useState, useEffect, useRef } from 'react';
-import sounds from '../data/sounds';
+'use client';
+import React, { useRef, useState, useEffect } from "react";
+import LinearProgress from '@mui/material/LinearProgress';
+import sounds from '../data/sounds'; // Import sounds data
 
-const Player = ({ soundKey }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [time, setTime] = useState({ min: "00", sec: "00" });
-  const [currTime, setCurrTime] = useState({ min: "00", sec: "00" });
-  const [seconds, setSeconds] = useState(0);
+const Player = ({ selectedImage }) => {
+  const [play, setPlay] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const audioRef = useRef(null); // Create a ref for the audio element
-  
-  const soundFile = sounds[soundKey]; // Retrieve the correct sound from sounds.js
+  const [progress, setProgress] = useState(0);
+  const [error, setError] = useState(null); // State for error handling
 
-  // Play or pause audio
-  const playingButton = () => {
-    if (isPlaying) {
-      audioRef.current.pause();
-      setIsPlaying(false);
-    } else {
-      audioRef.current.play();
-      setIsPlaying(true);
+  const audioRef = useRef(null);
+  
+  // Check if selectedImage is defined and has a soundKey
+  const soundKey = selectedImage && selectedImage.soundKey ? selectedImage.soundKey : null;
+
+  // Find the sound file based on soundKey
+  const selectedSound = soundKey ? sounds.find(sound => sound.key === soundKey) : null;
+  const soundFile = selectedSound ? `/audio/${selectedSound.waveType}` : null;
+
+  const toggleAudio = () => {
+    if (audioRef.current) {
+      if (play) {
+        audioRef.current.pause();
+        setPlay(false);
+      } else {
+        audioRef.current.play().catch((err) => {
+          console.error("Error playing audio:", err);
+          setError("Failed to play audio."); // Set error state
+        });
+        setPlay(true);
+      }
     }
   };
 
-  // Update current time when the audio is playing
-  useEffect(() => {
-    const updateCurrentTime = () => {
-      const current = audioRef.current.currentTime;
-      const min = Math.floor(current / 60);
-      const sec = Math.floor(current % 60);
-      setCurrTime({ min: min < 10 ? `0${min}` : min, sec: sec < 10 ? `0${sec}` : sec });
-      setSeconds(current);
-    };
-
+  const handleTimeUpdate = () => {
     if (audioRef.current) {
-      audioRef.current.addEventListener('timeupdate', updateCurrentTime);
+      const currentTime = audioRef.current.currentTime;
+      setCurrentTime(currentTime);
+      setProgress(normalize(currentTime, duration));
     }
+  };
 
-    return () => {
-      if (audioRef.current) {
-        audioRef.current.removeEventListener('timeupdate', updateCurrentTime);
-      }
-    };
+  const handleLoadedMetadata = () => {
+    if (audioRef.current && audioRef.current.duration) {
+      setDuration(audioRef.current.duration);
+    }
+  };
+
+  const handleEnded = () => {
+    setCurrentTime(0); // Reset current time to 0
+    setProgress(0); // Reset progress to 0
+    setPlay(false); // Stop playback
+  };
+
+  const handleError = (e) => {
+    console.error("Audio Error:", e);
+    setError("Audio could not be played.");
+  };
+
+  const normalize = (value, max) => {
+    if (max === 0) return 0;
+    return (value / max) * 100;
+  };
+
+  // Define the formatTime function here
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
+  };
+
+  useEffect(() => {
+    const audio = audioRef.current;
+
+    if (audio) {
+      audio.addEventListener("timeupdate", handleTimeUpdate);
+      audio.addEventListener("loadedmetadata", handleLoadedMetadata);
+      audio.addEventListener("ended", handleEnded);
+      audio.addEventListener("error", handleError);
+      return () => {
+        audio.removeEventListener("timeupdate", handleTimeUpdate);
+        audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
+        audio.removeEventListener("ended", handleEnded);
+        audio.removeEventListener("error", handleError);
+      };
+    }
   }, []);
 
-  // Set the duration when the audio is loaded
-  const handleLoadedMetadata = () => {
-    const audioDuration = audioRef.current.duration;
-    setDuration(audioDuration);
+  useEffect(() => {
+    if (audioRef.current && soundFile) {
+      audioRef.current.src = soundFile; // Set the source based on the soundFile
+      audioRef.current.load(); // Load the new audio source
+      // Reset state when changing sound
+      setCurrentTime(0);
+      setDuration(0);
+      setProgress(0);
+      setPlay(false);
+    }
+  }, [soundFile]); // Depend on soundFile
 
-    const min = Math.floor(audioDuration / 60);
-    const sec = Math.floor(audioDuration % 60);
-    setTime({ min: min < 10 ? `0${min}` : min, sec: sec < 10 ? `0${sec}` : sec });
-  };
-
-  // Handle time change via the input range (seek functionality)
-  const handleTimeChange = (e) => {
-    const newTime = e.target.value;
-    audioRef.current.currentTime = newTime;
-    setSeconds(newTime);
-  };
+  useEffect(() => {
+    setProgress(normalize(currentTime, duration));
+  }, [currentTime, duration]);
 
   return (
-    <div className="text-center">
-      <h2>Playing Now</h2>
-    
-      <div>
-        <h3 className="text-2xl font-bold">{soundKey}</h3>
+    <div className="items-center justify-center mb-3 bg-black p-3">
+      <div className="flex-col text-center">
+        {error && <div className="text-red-500">{error}</div>} {/* Show error message */}
+        <div className="flex items-center gap-4 mb-4">
+          <span className="text-white">{formatTime(currentTime)}</span>
+          <div className="flex grow">
+            <LinearProgress variant="determinate" sx={{ width: '100%' }} value={progress} />
+          </div>
+          <span className="text-white">{formatTime(duration)}</span>
+        </div>
+
+        <div className="flex items-center justify-center mr-4 gap-4 rounded-full">
+          <div className="filter invert">
+            <button onClick={toggleAudio} type="button">
+              {!play ? (
+                <img src="/play-solid.svg" className="h-12 w-12" aria-hidden="true" />
+              ) : (
+                <img src="/pause-solid.svg" className="h-12 w-12" aria-hidden="true" />
+              )}
+            </button>
+          </div>
+        </div>
+        <audio ref={audioRef} /> {/* Empty initially, src is set in useEffect */}
       </div>
-      <div className="flex justify-between py-4">
-        <p>{currTime.min}:{currTime.sec}</p>
-        <p>{time.min}:{time.sec}</p>
-      </div>
-      <input
-        type="range"
-        min="0"
-        max={duration}
-        value={seconds}
-        className="w-full my-4"
-        onChange={handleTimeChange}
-      />
-      <div className="flex justify-center space-x-4">
-        <button className="hover:scale-110 transform transition">Prev</button>
-        <button className="hover:scale-110 transform transition" onClick={playingButton}>
-          {isPlaying ? 'Pause' : 'Play'}
-        </button>
-        <button className="hover:scale-110 transform transition">Next</button>
-      </div>
-      <audio
-        ref={audioRef}
-        src={soundFile}
-        onLoadedMetadata={handleLoadedMetadata}
-      />
     </div>
   );
 };
