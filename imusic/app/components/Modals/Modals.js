@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types'; // Import PropTypes
-import Player from '../player';
+import MusicPlayer from './Audio-Player/Music-Player';
 
-const Modal = ({ image, alt, soundKey, isOpen, onClose, onPrev, onNext, showPrev, showNext }) => {
+
+const Modal = ({ image, alt, soundSrc, isOpen, onClose, onPrev, onNext, showPrev, showNext }) => {
   
   // Close modal on Escape key press
   const handleKeyDown = (event) => {
@@ -27,10 +27,9 @@ const Modal = ({ image, alt, soundKey, isOpen, onClose, onPrev, onNext, showPrev
         <img src={image} alt={alt} style={{ width: '100%', marginBottom: '20px' }} />
         <h2 className="text-xl font-bold mb-2">{alt}</h2>
 
-        {/* Player component with dynamic soundKey */}
-        <Player soundKey={soundKey} />
-
-        <div className="flex justify-between mt-4">
+ 
+        <MusicPlayer soundSrc={soundSrc}/>
+        <div className="flex justify-between mt-4">x
           {showPrev && (
             <button onClick={onPrev} className="hover:scale-110 transform transition">
               Previous

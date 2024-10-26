@@ -40,6 +40,7 @@ export default function Home ()  {
               key={index}
               image={img.src}
               alt={img.alt}
+              soundSrc={img.soundSrc}
               onClick={() => setSelectedImageIndex(index)}
             />
           ))}
@@ -57,7 +58,7 @@ export default function Home ()  {
         <Modal
           image={selectedImage.src}
           alt={selectedImage.alt}
-          soundKey={selectedImage.soundKey}
+          soundSrc={selectedImage.soundSrc}
           isOpen={selectedImage !== null}
           onClose={() => setSelectedImageIndex(null)}
           onPrev={handlePrev}

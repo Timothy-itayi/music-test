@@ -1,16 +1,16 @@
 const sounds = [
     {
-        key: "control",
+        id: 1,
         title: "Control",
         waveType: "control-hennson.mp3",
       },
     {
-        key: 'black-hole-sun',
+        id: 2,
         title: "Black Hole Sun",
         waveType: "Black-hole-sun.mp3"
     },
     {
-        key: 'romantic',
+        id: 3,
         title: "Romantic",
         waveType: "Romantic-Adturnup.mp3"
     },
