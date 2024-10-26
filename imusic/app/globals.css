@@ -72,23 +72,62 @@ body {
 }
 
 .modal {
-  display: none;
   position: fixed;
   z-index: 1;
-  right: 0px;;
-  
+  right: 0px; /* Adjust as needed */
   top: 0;
-  width: 30%;
-  height: 30%;
-
-  background-color: rgba(0, 0, 0, 0.4);
+  width: 10%; /* You can adjust this as necessary */
+  height: 10%; /* Ensures it covers the entire screen */
+  background-color: rgba(255, 255, 255, 0.4); /* Use a semi-transparent background */
+  display: flex; /* Allow flexbox properties for centering */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  opacity: 0; /* Start hidden */
+  transition: opacity 0.5s ease; /* Smooth transition for opacity */
 }
 
-.modal-content {
-  background-color: #000000;
-  margin: 15% auto;
- 
-  border: 1px solid antiquewhite;
-  width: 80%;
-  max-width: 600px;
+.modal-open {
+  opacity: 1; /* Show when modal is open */
+}
+
+@keyframes fade-down {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+@keyframes fade-down {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+.animate-fade-down {
+  animation: fade-down 0.3s ease forwards;
+}
+
+.animate-fade-out {
+  animation: fade-out 0.3s ease forwards;
 }
