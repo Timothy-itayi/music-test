@@ -12,6 +12,7 @@ const MusicPlayer = ({ soundSrc }) => {
     }
     return () => audio && audio.pause();
   }, [isPlaying, soundSrc])
+  
   console.log(soundSrc)
   ;
 
