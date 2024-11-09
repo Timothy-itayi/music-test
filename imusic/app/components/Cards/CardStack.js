@@ -28,6 +28,7 @@ const CardStack = ({ cards, onCardClick }) => {
               alt={card.alt}
               soundSrc={card.soundSrc}
             />
+     
           </div>
         ))}
       </div>
