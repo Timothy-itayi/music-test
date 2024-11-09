@@ -27,61 +27,69 @@ body {
 }
 
 .project-container {
-  position: relative; /* Allows absolute positioning of cards */
-  height: 500px; /* Set a fixed height for the container */
-  overflow: hidden; /* Prevent overflow on the container */
-  padding: 100px 0; /* Adjust vertical padding as needed */
+  position: fixed;
+  height: 100svh;
+  width: 100%;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center
 }
 
 .project-stack {
-  position: relative; /* Container for stacking cards */
-  height: auto; /* Allow height to be determined by content */
-  width: 300px; /* Width to fit the cards */
-  overflow-y: visible; /* Enable vertical scrolling of cards */
-  top: 0; /* Align at the top */
-  left: 0; /* Align at the left */
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  z-index: 1;
+  height: 100% !important;
+  width: 100% !important;
 }
 
-/* Styling for each project card */
-.project-card {
-  position: absolute; /* Position cards absolutely */
-  width: 300px; /* Card width */
-  height: 400px; /* Card height */
-  background-color: rgb(131, 37, 37);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  overflow: auto; /* Allow scrollable content within each card */
+.project-card:hover {
+  transform: translateX(110px);
+  /* Move 110px to the right and enlarge on hover */
+/* Ensure smooth transition */
 }
 
-/* Positioning each card diagonally */
-.project-card:nth-child(1) { top: 0px;    left: 0px;    z-index: 18; }
-.project-card:nth-child(2) { top: 40px;   left: 40px;   z-index: 17; } /* Increased spacing */
-.project-card:nth-child(3) { top: 80px;   left: 80px;   z-index: 16; }
-.project-card:nth-child(4) { top: 120px;  left: 120px;  z-index: 15; }
-.project-card:nth-child(5) { top: 160px;  left: 160px;  z-index: 14; }
-.project-card:nth-child(6) { top: 200px;  left: 200px;  z-index: 13; }
-.project-card:nth-child(7) { top: 240px;  left: 240px;  z-index: 12; }
-.project-card:nth-child(8) { top: 280px;  left: 280px;  z-index: 11; }
-.project-card:nth-child(9) { top: 320px;  left: 320px;  z-index: 10; }
-.project-card:nth-child(10) { top: 360px; left: 360px;  z-index: 9; }
-.project-card:nth-child(11) { top: 400px; left: 400px;  z-index: 8; }
-.project-card:nth-child(12) { top: 440px; left: 440px;  z-index: 7; }
-.project-card:nth-child(13) { top: 480px; left: 480px;  z-index: 6; }
-.project-card:nth-child(14) { top: 520px; left: 520px;  z-index: 5; }
-.project-card:nth-child(15) { top: 560px; left: 560px;  z-index: 4; }
-.project-card:nth-child(16) { top: 600px; left: 600px;  z-index: 3; }
-.project-card:nth-child(17) { top: 640px; left: 640px;  z-index: 2; }
-.project-card:nth-child(18) { top: 680px; left: 680px;  z-index: 1; }
 
 .project-card img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Ensure images fill the card */
+  object-fit: cover;
 }
 
-.project-card:hover {
-  transform: translateY(-10px) scale(1.05); /* Lift and enlarge on hover */
+.project-card{
+  transition: transform .5s ease-in-out;
 }
+
+
+
+/* Positioning each card diagonally */
+/* Positioning each card diagonally with increased spacing */
+.project-card:nth-child(1) { top: 0px;    left: 0px;    z-index: 18; }
+.project-card:nth-child(2) { top: 80px;   left: 80px;   z-index: 17; } 
+.project-card:nth-child(3) { top: 160px;  left: 160px;  z-index: 16; }
+.project-card:nth-child(4) { top: 240px;  left: 240px;  z-index: 15; }
+.project-card:nth-child(5) { top: 320px;  left: 320px;  z-index: 14; }
+.project-card:nth-child(6) { top: 400px;  left: 400px;  z-index: 13; }
+.project-card:nth-child(7) { top: 480px;  left: 480px;  z-index: 12; }
+.project-card:nth-child(8) { top: 560px;  left: 560px;  z-index: 11; }
+.project-card:nth-child(9) { top: 640px;  left: 640px;  z-index: 10; }
+.project-card:nth-child(10) { top: 720px; left: 720px;  z-index: 9; }
+.project-card:nth-child(11) { top: 800px; left: 800px;  z-index: 8; }
+.project-card:nth-child(12) { top: 880px; left: 880px;  z-index: 7; }
+.project-card:nth-child(13) { top: 960px; left: 960px;  z-index: 6; }
+.project-card:nth-child(14) { top: 1040px; left: 1040px; z-index: 5; }
+.project-card:nth-child(15) { top: 1120px; left: 1120px; z-index: 4; }
+.project-card:nth-child(16) { top: 1200px; left: 1200px; z-index: 3; }
+.project-card:nth-child(17) { top: 1280px; left: 1280px; z-index: 2; }
+.project-card:nth-child(18) { top: 1360px; left: 1360px; z-index: 1; }
+
 
 /* Hide scrollbar if needed */
 ::-webkit-scrollbar {
