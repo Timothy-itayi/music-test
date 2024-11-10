@@ -1,24 +1,36 @@
-// components/Player/MusicPlayer.js
-
-import { useState, useEffect } from 'react';
+import { useCallback, useState, useRef, useEffect } from 'react';
 
 const MusicPlayer = ({ soundSrc }) => {
   const [isPlaying, setIsPlaying] = useState(false);
-  const audio = typeof Audio !== "undefined" ? new Audio(soundSrc) : null;
+  const audioRef = useRef(null); // Using useRef to store the audio element
 
   useEffect(() => {
-    if (audio) {
-      isPlaying ? audio.play() : audio.pause();
+    // Create a new audio element only if soundSrc changes
+    if (audioRef.current) {
+      audioRef.current.pause(); // Pause the previous audio if any
+      audioRef.current = new Audio(soundSrc); // Update audio element
+    } else {
+      audioRef.current = new Audio(soundSrc);
     }
-    return () => audio && audio.pause();
-  }, [isPlaying, soundSrc])
-  
-  console.log(soundSrc)
-  ;
+
+    // Cleanup: Pause the audio when the component unmounts or before switching tracks
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+    };
+  }, [soundSrc]); // Runs when soundSrc changes
 
   const togglePlay = () => {
-    setIsPlaying(!isPlaying);
-
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+      setIsPlaying((prev) => !prev);
+      console.log("Current Song", soundSrc);
+    }
   };
 
   return (
