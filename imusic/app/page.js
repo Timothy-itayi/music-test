@@ -4,6 +4,7 @@ import Head from 'next/head';
 import CardStack from './components/Cards/CardStack';
 import images from './data/images-data';
 import Modal from '../app/components/Modals/Modals';
+import sounds from '../app/data/sounds'
 import Navbar from './components/Nav/NavBar';
 
 export default function Home ()  {
@@ -33,7 +34,7 @@ export default function Home ()  {
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
       </Head>
       <Navbar/>
-      <CardStack cards={images} onCardClick={setSelectedImageIndex} />
+      <CardStack cards={images} onCardClick={setSelectedImageIndex} sounds={sounds} />
       <div className="absolute right-4">
         <button className="px-4 py-2 bg-black rounded-full text-white text-sm">Genres</button>
         <button className="px-4 py-2 bg-black rounded-full text-white text-sm">Albums</button>

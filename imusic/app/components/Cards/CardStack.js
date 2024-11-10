@@ -1,57 +1,45 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import ProjectCard from '../Cards/ProjectCard';
+
+const MemoizedProjectCard = React.memo(ProjectCard);
 
 const CardStack = ({ cards, onCardClick }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const scrollerRef = useRef(null);
 
   useEffect(() => {
     if (isTransitioning) {
-      // Short timeout to allow for hiding animation
-      const timer = setTimeout(() => setIsTransitioning(false), 5);
+      const timer = setTimeout(() => setIsTransitioning(false), 0); // Adjust based on CSS transition
       return () => clearTimeout(timer);
     }
   }, [isTransitioning]);
 
-  const handleCardClick = (index) => {
+  const handleCardSelect = useCallback((index) => {
     if (!isTransitioning) {
       setIsTransitioning(true);
       setActiveIndex(index);
       onCardClick(index);
+      console.log(`Card selected: ${index}`, cards[index]); // Log the selected card
     }
-  };
+  }, [isTransitioning, onCardClick, cards]);
 
-  const smoothScroll = (direction) => {
+  const navigateCards = (direction) => {
     if (!isTransitioning) {
-      const newIndex = direction === 'left'
-        ? Math.max(0, activeIndex - 1)
-        : Math.min(cards.length - 1, activeIndex + 1);
-      
+      const newIndex =
+        direction === 'previous'
+          ? Math.max(0, activeIndex - 1)
+          : Math.min(cards.length - 1, activeIndex + 1);
+
       setIsTransitioning(true);
       setActiveIndex(newIndex);
-      
-      if (scrollerRef.current) {
-        const targetCard = scrollerRef.current.children[newIndex];
-        if (targetCard) {
-          targetCard.scrollIntoView({ behavior: 'smooth', inline: 'center' });
-        }
-      }
+      console.log(`Navigated to card: ${newIndex}`, cards[newIndex]); // Log the card being navigated to
     }
-  };
-
-  const getAnimationClass = (index) => {
-    if (isTransitioning) return 'card-transitioning';
-    return index === activeIndex ? `animate${index + 1}-active` : `animate${index + 1}-inactive`;
   };
 
   return (
     <div className="fixed h-screen w-full top-0 right-0 bottom-0 left-0 z-2 flex items-center justify-center perspective-1000">
       <main className="w-[800px] h-[600px] preserve-3d">
-        <div
-          ref={scrollerRef}
-          className="w-full h-full overflow-hidden whitespace-nowrap flex snap-x snap-mandatory scroller"
-        >
+        <div className="w-full h-full overflow-hidden whitespace-nowrap flex snap-x snap-mandatory scroller">
           {cards.map((_, index) => (
             <div
               key={index}
@@ -64,15 +52,15 @@ const CardStack = ({ cards, onCardClick }) => {
         <div className="card-stack absolute inset-0 preserve-3d">
           {cards.map((card, index) => (
             <div
-              key={`${index}-${activeIndex}`}
-              className={`card absolute inset-0 m-auto w-[300px] h-[400px] rounded-2xl flex items-center justify-center preserve-3d overflow-hidden shadow-lg transform-gpu cursor-pointer transition-transform duration-500 ${getAnimationClass(index)}`}
+              key={index} // Use stable index as key
+              className={`card absolute inset-0 m-auto w-[300px] h-[400px] rounded-2xl flex items-center justify-center preserve-3d overflow-hidden shadow-lg transform-gpu cursor-pointer`}
               data-position={index - activeIndex}
-              onClick={() => handleCardClick(index)}
+              onClick={() => handleCardSelect(index)}
               style={{
                 zIndex: activeIndex === index ? 10 : 1,
               }}
             >
-              <ProjectCard
+              <MemoizedProjectCard
                 image={card.src}
                 alt={card.alt}
                 soundSrc={card.soundSrc}
@@ -83,16 +71,16 @@ const CardStack = ({ cards, onCardClick }) => {
         </div>
       </main>
       <button
-        onClick={() => smoothScroll('left')}
-        className="absolute left-5 top-1/2 transform -translate-y-1/2 bg-gray-700 text-white p-2 rounded-full"
+        onClick={() => navigateCards('previous')}
+        className="absolute left-5 top-1/2 hover:scale-110 transform transition bg-gray-700 text-white p-2 rounded-md"
       >
-        Left
+        Previous
       </button>
       <button
-        onClick={() => smoothScroll('right')}
-        className="absolute right-5 top-1/2 transform -translate-y-1/2 bg-gray-700 text-white p-2 rounded-full"
+        onClick={() => navigateCards('next')}
+        className="absolute right-5 top-1/2 hover:scale-110 transform transition bg-gray-700 text-white p-2 rounded-md"
       >
-        Right
+        Next
       </button>
     </div>
   );
