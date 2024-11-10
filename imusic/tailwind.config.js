@@ -15,6 +15,13 @@ module.exports = {
           
      
       },
+      width: {
+        '[300px]': '300px',
+      },
+      height: {
+        '[400px]': '400px',
+        '[600px]': '600px',
+      },
       keyframes: {
         scroll: {
           to: {
