@@ -5,6 +5,10 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --dim-card-width: 300px;
+  --dim-card-height: 400px;
+  --dim-card-border-radius: 16px;
+  --box-shadow-card: 0 1px 12px rgba(0, 0, 0, 0.4);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -24,78 +28,81 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+  
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  .perspective-1000 {
+    perspective: 1000px;
+  }
 }
 
-.project-container {
-  position: fixed;
-  height: 100svh;
-  width: 100%;
-  top: 0px;
-  right: 0px;
-  bottom: 0px;
-  left: 0px;
-  z-index: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center
+.scroller {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
-.project-stack {
-  top: 0px;
-  right: 0px;
-  bottom: 0px;
-  left: 0px;
-  z-index: 1;
-  height: 100% !important;
-  width: 100% !important;
-}
-
-.project-card:hover {
-  transform: translateX(110px);
-  /* Move 110px to the right and enlarge on hover */
-/* Ensure smooth transition */
-}
-
-
-.project-card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.project-card{
-  transition: transform .5s ease-in-out;
-}
-
-
-
-/* Positioning each card diagonally */
-/* Positioning each card diagonally with increased spacing */
-.project-card:nth-child(1) { top: 0px;    left: 0px;    z-index: 18; }
-.project-card:nth-child(2) { top: 80px;   left: 80px;   z-index: 17; } 
-.project-card:nth-child(3) { top: 160px;  left: 160px;  z-index: 16; }
-.project-card:nth-child(4) { top: 240px;  left: 240px;  z-index: 15; }
-.project-card:nth-child(5) { top: 320px;  left: 320px;  z-index: 14; }
-.project-card:nth-child(6) { top: 400px;  left: 400px;  z-index: 13; }
-.project-card:nth-child(7) { top: 480px;  left: 480px;  z-index: 12; }
-.project-card:nth-child(8) { top: 560px;  left: 560px;  z-index: 11; }
-.project-card:nth-child(9) { top: 640px;  left: 640px;  z-index: 10; }
-.project-card:nth-child(10) { top: 720px; left: 720px;  z-index: 9; }
-.project-card:nth-child(11) { top: 800px; left: 800px;  z-index: 8; }
-.project-card:nth-child(12) { top: 880px; left: 880px;  z-index: 7; }
-.project-card:nth-child(13) { top: 960px; left: 960px;  z-index: 6; }
-.project-card:nth-child(14) { top: 1040px; left: 1040px; z-index: 5; }
-.project-card:nth-child(15) { top: 1120px; left: 1120px; z-index: 4; }
-.project-card:nth-child(16) { top: 1200px; left: 1200px; z-index: 3; }
-.project-card:nth-child(17) { top: 1280px; left: 1280px; z-index: 2; }
-.project-card:nth-child(18) { top: 1360px; left: 1360px; z-index: 1; }
-
-
-/* Hide scrollbar if needed */
-::-webkit-scrollbar {
+.scroller::-webkit-scrollbar {
   display: none;
 }
 
+@layer components {
+  .card {
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    background-color: blue;
+  }
+
+  .card[data-position="0"] {
+    transform: translateX(0) rotateY(0) translateZ(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  .card[data-position="1"] {
+    transform: translateX(30%) rotateY(10deg) translateZ(-150px);
+    opacity: 0.8;
+  }
+  
+  .card[data-position="-1"] {
+    transform: translateX(-30%) rotateY(-10deg) translateZ(-150px);
+    opacity: 0.8;
+  }
+  
+  .card[data-position="2"] {
+    transform: translateX(60%) rotateY(15deg) translateZ(-300px);
+    opacity: 0.6;
+  }
+  
+  .card[data-position="-2"] {
+    transform: translateX(-60%) rotateY(-15deg) translateZ(-300px);
+    opacity: 0.6;
+  }
+  
+
+/* Add smooth transitions for the card stack */
+.card-stack {
+  transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Smooth animation for active card changes */
+.card-stack[data-active-index] .card {
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* ProjectCard specific styles within the card stack */
+.card .project-card {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.card[data-position="0"] .project-card:hover {
+  transform: scale(1.05);
+}
 
 .modal {
   position: fixed;
@@ -115,45 +122,4 @@ body {
 .modal-open {
   opacity: 1; /* Show when modal is open */
 }
-
-@keyframes fade-down {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-
-@keyframes fade-down {
-  0% {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fade-out {
-  0% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-}
-
-.animate-fade-down {
-  animation: fade-down 0.3s ease forwards;
-}
-
-.animate-fade-out {
-  animation: fade-out 0.3s ease forwards;
 }

@@ -6,7 +6,7 @@ const images = [
     { id: 5, src: "/assets/icon04.png", soundSrc: "/sounds/Black-hole-sun.mp3" },
     { id: 6, src: "/assets/icon05.png",  soundSrc: "/sounds/control-hennson.mp3" },
     { id: 7, src: "/assets/icon06.png",  soundSrc: " /sounds/Romantic-Adturnup.mp3" },
-    { id: 8, src: "/assets/icon07.png", soundSrc: "/sounds/Black-hole-sun.mp3" },
+
     { id: 9, src: "/assets/icon08.png",  soundSrc: "/sounds/control-hennson.mp3" },
     { id: 10, src: "/assets/icon09.png",  soundSrc: " /sounds/Romantic-Adturnup.mp3" },
     { id: 11, src: "/assets/icon10.png", soundSrc: "/sounds/Black-hole-sun.mp3" },
