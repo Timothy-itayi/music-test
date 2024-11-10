@@ -1,0 +1,181 @@
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+// Now you can access mixins globally
+
+@import './mixins'; 
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --dim-card-width: 300px;
+  --dim-card-height: 400px;
+  --dim-card-border-radius: 16px;
+  --box-shadow-card: 0 1px 12px rgba(0, 0, 0, 0.4);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+
+.scroller {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  white-space: nowrap;
+  display: flex;
+  scroll-snap-type: x mandatory;
+  scroll-timeline: --scroll-timeline;
+  scroll-timeline-axis: x;
+}
+
+.scroller::-webkit-scrollbar {
+  display: none;
+}
+
+@layer components {
+  
+
+  .card-stack {
+    position: absolute; /* Position relative to the parent container */
+    transform-style: preserve-3d;
+    perspective: 1000px; /* 3D perspective */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  /* Set the height to a smaller value */
+
+; 
+  }
+  
+  .card-transitioning {
+    opacity: 50%;
+ 
+  }
+
+    .card .project-card {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transition: transform .5s cubic-bezier(0.23, 1, 0.32, 1);
+ background-color: #ffffff;
+      margin: auto;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform-style: preserve-3d;
+      overflow: hidden;
+    
+    /* Center the active card */
+    // transform: translate3d(0, 0, ${(props) => props.position * -100}px) 
+    //           rotateY(${(props) => props.position * 10}deg)};
+              
+              /* Z-axis movement */
+  }
+  
+  
+  
+  .card[data-position="1"] {
+    transform: translate3d(100%, 0, -300px) rotateY(30deg); /* Card to the right */
+    opacity: 30%;
+  }
+  
+  .card[data-position="-1"] {
+    transform: translate3d(-100%, 0, -300px) rotateY(-30deg); /* Card to the left */
+    opacity: 30%;
+  }
+  
+  /* Ensure cards moving out of view are smaller */
+  .card[data-position="2"],
+  .card[data-position="-2"] {
+    transform: translate3d(200%, 0, -600px) rotateY(50deg); /* Cards farther away */
+    opacity: 30%;
+  }
+  
+  .card[data-position="-3"],
+  .card[data-position="3"] {
+    transform: translate3d(300%, 0, -900px) rotateY(70deg); /* Cards even further back */
+    opacity: 30%;
+  }
+
+  .card img {
+    position: absolute;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    border-radius: var(--dim-card-border-radius);
+    transform-style: preserve-3d;
+  }
+  
+  /* Smooth transition for carousel movement */
+  .card-stack[data-active-index] .card {
+    transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  
+
+
+@for $i from 1 through $card-count {
+  .card:nth-child(#{$i}) {
+    animation: animate#{$i}-inactive linear forwards;
+    animation-timeline: --scroll-timeline;
+  }
+
+  [data-active-index="#{$i - 1}"] .card:nth-child(#{$i}) {
+    animation: animate#{$i}-active linear forwards;
+    animation-timeline: --scroll-timeline;
+  }
+
+  .card:nth-child(#{$i}) img {
+    animation: animate-card-image-#{$i} linear forwards;
+    animation-timeline: --scroll-timeline;
+  }
+
+  [data-active-index="#{$i - 1}"] .card-stack {
+    animation: card-stack-#{$i} linear forwards;
+    animation-timeline: --scroll-timeline;
+  }
+
+  .card:nth-child(#{$i})::before {
+    animation: card-bg linear forwards;
+    animation-timeline: --scroll-timeline;
+  }
+
+  @include animate-active($i);
+  @include animate-inactive($i);
+
+  @include card-stack-keyframes($i);
+}
+
+.modal {
+  position: fixed;
+  z-index: 1;
+  right: 0px; /* Adjust as needed */
+  top: 0;
+  width: 10%; /* You can adjust this as necessary */
+  height: 10%; /* Ensures it covers the entire screen */
+  background-color: rgba(255, 255, 255, 0.4); /* Use a semi-transparent background */
+  display: flex; /* Allow flexbox properties for centering */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  opacity: 0; /* Start hidden */
+  transition: opacity 0.5s ease; /* Smooth transition for opacity */
+}
+
+.modal-open {
+  opacity: 1; /* Show when modal is open */
+}
+}
