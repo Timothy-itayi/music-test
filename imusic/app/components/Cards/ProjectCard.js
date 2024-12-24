@@ -7,8 +7,8 @@ const ProjectCard = ({ image, alt, soundSrc, onClick,  }) => (
     <MusicPlayer soundSrc={soundSrc} />
 
     {/* Image container */}
-    <div className="project-card ">
-      <img src={image} alt={alt} className="card" />
+    <div className="card">
+      <img src={image} alt={alt} className="image" />
     </div>
 
 
