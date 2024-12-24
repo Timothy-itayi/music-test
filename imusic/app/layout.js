@@ -1,16 +1,6 @@
-import localFont from "next/font/local";
+
 import "./globals.scss";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
 
 export const metadata = {
   title: "imusic",
@@ -21,7 +11,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className='bg-black'
+        className='bg-[#DC8D45]'
       >
         {children}
       </body>
