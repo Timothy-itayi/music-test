@@ -117,19 +117,19 @@ const CardStack = ({ cards }) => {
         <>
           <div
             ref={overlayRef}
-            className="fixed inset-0 bg-black/50 z-40"
+            className="fixed inset-0  z-40"
             onClick={closeModal}
           />
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div
               ref={modalRef}
-              className="bg-white dark:bg-neutral-900 rounded-xl max-w-lg w-full overflow-hidden"
+              className="bg-[#F4F4F3] rounded-xl max-w-lg w-full overflow-hidden"
               onClick={e => e.stopPropagation()}
             >
               <div className="relative">
                 <button
                   onClick={closeModal}
-                  className="absolute top-2 right-2 p-2 rounded-full bg-white/80 hover:bg-white transition-colors"
+                  className="absolute top-2 right-2 p-2 rounded-full bg-[#40b462] hover:bg-[#266108] transition-colors"
                 >
                   <svg
                     className="w-6 h-6"
@@ -148,25 +148,24 @@ const CardStack = ({ cards }) => {
                 <img
                   src={activeCard.src}
                   alt={activeCard.alt}
-                  className="w-full h-60 object-cover"
+                  className="w-full h-100 object-cover "
                 />
               </div>
+<div className='text-center justify-center bg-[#40b462] rounded-lg m-10 px-4 py-5 text-xl text-white hover:bg-[#266108] transition-colors'>
 
-              <MusicPlayer soundSrc={activeCard.soundSrc} />
+              <MusicPlayer soundSrc={activeCard.soundSrc} 
+           />
+</div>
+           
 
-              <div className="p-4">
-                <h3 className="text-xl font-semibold mb-2">{activeCard.title}</h3>
-                <p className="text-gray-600 dark:text-gray-300">{activeCard.description}</p>
-              </div>
-
-              <div className="p-4 flex justify-between">
+              <div className="p-4 flex justify-between custom-font">
                 <button
                   onClick={handlePrev}
                   disabled={!activeCard.showPrev}
-                  className={`px-4 py-2 rounded-full ${
+                  className={`px-4 py-2 rounded-lg ${
                     activeCard.showPrev
-                      ? 'bg-gray-200 hover:bg-gray-300'
-                      : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                      ? 'bg-[#7386D5] hover:bg-[#2a4bcc]'
+                      : 'bg-[#7386D5] text-gray-400 cursor-not-allowed'
                   }`}
                 >
                   Previous
@@ -174,10 +173,10 @@ const CardStack = ({ cards }) => {
                 <button
                   onClick={handleNext}
                   disabled={!activeCard.showNext}
-                  className={`px-4 py-2 rounded-full ${
+                  className={`px-4 py-2 rounded-lg ${
                     activeCard.showNext
-                      ? 'bg-gray-200 hover:bg-gray-300'
-                      : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                      ? 'bg-[#7386D5] hover:bg-[#2a4bcc]'
+                      : 'bg-[#7386D5] text-gray-400 cursor-not-allowed'
                   }`}
                 >
                   Next
